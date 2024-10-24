@@ -12,8 +12,8 @@ var direction = -1
 func _process(delta: float) -> void:
 	position.x += direction * SPEED * delta
 	if ray_cast_right.is_colliding():
-		print("Collided right object")
 		direction = -1
+		animated_sprite.flip_h = true
 	if ray_cast_left.is_colliding():
-		print("Collided left object")
 		direction = 1
+		animated_sprite.flip_h = false
