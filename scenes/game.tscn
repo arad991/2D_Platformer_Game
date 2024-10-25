@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://fw2qiakwskbv"]
+[gd_scene load_steps=17 format=4 uid="uid://fw2qiakwskbv"]
 
 [ext_resource type="PackedScene" uid="uid://dnqepapsjllvm" path="res://scenes/player.tscn" id="1_anqcu"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_f4xvb"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cish7gdqvs3rk" path="res://scenes/killzone.tscn" id="5_r4gem"]
 [ext_resource type="PackedScene" uid="uid://ce5bontngymab" path="res://scenes/slime.tscn" id="6_el45k"]
 [ext_resource type="FontFile" uid="uid://bx1t3mga41xit" path="res://assets/fonts/PixelOperator8.ttf" id="7_5dewf"]
+[ext_resource type="Script" path="res://scripts/killzone_fall.gd" id="7_rtoao"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_imsb7"]
 texture = ExtResource("2_qdj7d")
@@ -178,6 +179,21 @@ sources/0 = SubResource("TileSetAtlasSource_imsb7")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_j0i8b"]
 
+[sub_resource type="Animation" id="Animation_kgifb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(367, 53)]
+}
+
 [sub_resource type="Animation" id="Animation_rikwx"]
 resource_name = "move"
 length = 1.5
@@ -195,21 +211,6 @@ tracks/0/keys = {
 "values": [Vector2(367, 53), Vector2(481, 53)]
 }
 
-[sub_resource type="Animation" id="Animation_kgifb"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(367, 53)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c4eu0"]
 _data = {
 "RESET": SubResource("Animation_kgifb"),
@@ -217,6 +218,22 @@ _data = {
 }
 
 [node name="Game" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HpLabel" type="Label" parent="CanvasLayer"]
+show_behind_parent = true
+offset_left = 1.0
+offset_top = 3.0
+offset_right = 104.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(0.6502, 0.630712, 5.77569e-07, 1)
+theme_override_colors/font_shadow_color = Color(0.32069, 0.174183, 4.81308e-08, 1)
+theme_override_fonts/font = ExtResource("2_h62fl")
+theme_override_font_sizes/font_size = 24
+text = "HP: X"
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
@@ -247,6 +264,7 @@ collision_enabled = false
 position = Vector2(33, 33)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+unique_name_in_owner = true
 position = Vector2(0, -8)
 zoom = Vector2(4, 4)
 limit_bottom = 120
@@ -255,6 +273,7 @@ position_smoothing_enabled = true
 
 [node name="Killzone" parent="." instance=ExtResource("5_r4gem")]
 position = Vector2(74, 142)
+script = ExtResource("7_rtoao")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape2D_j0i8b")
@@ -304,6 +323,9 @@ autoplay = "move"
 
 [node name="Slime" parent="." instance=ExtResource("6_el45k")]
 position = Vector2(539, 81)
+
+[node name="Slime2" parent="." instance=ExtResource("6_el45k")]
+position = Vector2(128, 1)
 
 [node name="Labels" type="Node" parent="."]
 
