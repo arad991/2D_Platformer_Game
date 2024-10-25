@@ -50,3 +50,4 @@ func _physics_process(delta: float) -> void:
 func get_hit(damage):
 	hp -= damage
 	animation_player.play("getting_hit")
+	animated_sprite.play("getting_hit")

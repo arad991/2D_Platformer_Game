@@ -30,16 +30,13 @@ func _physics_process(delta: float) -> void:
 
 	# Check for landing
 	if velocity.y < 0 and not is_on_floor():
-		print("I should be on air and now I will get a landing command " + str(velocity.y))
 		velocity.y = 0
 		
-	if ray_cast_right.is_colliding():
-		direction = -1
-		animated_sprite.flip_h = true
-
-	if ray_cast_left.is_colliding():
-		direction = 1
-		animated_sprite.flip_h = false
+	#if ray_cast_right.is_colliding():
+		#direction = -1
+#
+	#if ray_cast_left.is_colliding():
+		#direction = 1
 
 	move_and_slide()
 
@@ -50,9 +47,13 @@ func _on_killzone_body_entered(body: Node2D) -> void:
 func _on_jump_timer_timeout() -> void:
 	print("timer has ended!")
 	if is_on_floor():
-		print("I should be on the floor and get a jump command")
 		velocity.y = -JUMP_VELOCITY
 		# Reverse direction on each jump
 		var x = randf()
 		if x <= 0.5:
 			direction *= -1
+			if direction == -1:
+				animated_sprite.flip_h = true
+			else:
+				animated_sprite.flip_h = false
+				

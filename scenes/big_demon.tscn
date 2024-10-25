@@ -53,6 +53,7 @@ size = Vector2(16, 21)
 
 [node name="Big Demon" type="CharacterBody2D"]
 z_index = 1
+collision_layer = 4
 script = ExtResource("1_ulyi2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
