@@ -1,0 +1,90 @@
+[gd_scene load_steps=13 format=3 uid="uid://co4o3a4st7am3"]
+
+[ext_resource type="Script" path="res://scripts/slime.gd" id="1_ulyi2"]
+[ext_resource type="Texture2D" uid="uid://cwwkot4tkahog" path="res://assets/sprites/big demon/big_demon_idle_anim_f1.png" id="2_qeu47"]
+[ext_resource type="Texture2D" uid="uid://cdim5bqc7a1v0" path="res://assets/sprites/big demon/big_demon_idle_anim_f2.png" id="3_8prli"]
+[ext_resource type="PackedScene" uid="uid://cish7gdqvs3rk" path="res://scenes/killzone.tscn" id="3_r53gf"]
+[ext_resource type="Texture2D" uid="uid://cxnrcn2hbvl87" path="res://assets/sprites/big demon/big_demon_idle_anim_f3.png" id="4_xr0jj"]
+[ext_resource type="Texture2D" uid="uid://50vgj6dk1ljq" path="res://assets/sprites/big demon/big_demon_idle_anim_f0.png" id="5_ou1pl"]
+[ext_resource type="Texture2D" uid="uid://btfxrvd2id6a4" path="res://assets/sprites/big demon/big_demon_run_anim_f0.png" id="6_tqw3e"]
+[ext_resource type="Texture2D" uid="uid://m7ofn72lo5vn" path="res://assets/sprites/big demon/big_demon_run_anim_f1.png" id="7_4h4uh"]
+[ext_resource type="Texture2D" uid="uid://b0xn5erq6ea8g" path="res://assets/sprites/big demon/big_demon_run_anim_f2.png" id="8_jp46h"]
+[ext_resource type="Texture2D" uid="uid://dthkd2hdcqy3m" path="res://assets/sprites/big demon/big_demon_run_anim_f3.png" id="9_17r8t"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bigns"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qeu47")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8prli")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xr0jj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ou1pl")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_tqw3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4h4uh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_jp46h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_17r8t")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oy8lx"]
+size = Vector2(16, 21)
+
+[node name="Big Demon" type="CharacterBody2D"]
+z_index = 1
+script = ExtResource("1_ulyi2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2.5, -12.625)
+scale = Vector2(0.78125, 0.743056)
+sprite_frames = SubResource("SpriteFrames_bigns")
+animation = &"run"
+autoplay = "run"
+frame_progress = 0.00722793
+
+[node name="Killzone" parent="." instance=ExtResource("3_r53gf")]
+position = Vector2(-1, -13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(3, 2.5)
+shape = SubResource("RectangleShape2D_oy8lx")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(2, -11)
+target_position = Vector2(12, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(2, -11)
+target_position = Vector2(-12, 0)
+
+[node name="Jump Timer" type="Timer" parent="."]
+wait_time = 1.7
+autostart = true
+
+[node name="CollisionShape2DMain" type="CollisionShape2D" parent="."]
+position = Vector2(2, -10.5)
+shape = SubResource("RectangleShape2D_oy8lx")
+
+[connection signal="body_entered" from="Killzone" to="." method="_on_killzone_body_entered"]
+[connection signal="timeout" from="Jump Timer" to="." method="_on_jump_timer_timeout"]
