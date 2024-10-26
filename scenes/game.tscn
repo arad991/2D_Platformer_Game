@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=4 uid="uid://fw2qiakwskbv"]
+[gd_scene load_steps=23 format=4 uid="uid://fw2qiakwskbv"]
 
 [ext_resource type="PackedScene" uid="uid://dnqepapsjllvm" path="res://scenes/player.tscn" id="1_anqcu"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_f4xvb"]
 [ext_resource type="FontFile" uid="uid://hsqfbeue67d8" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_h62fl"]
 [ext_resource type="Texture2D" uid="uid://dv2r0x8vxj4eh" path="res://assets/sprites/ui_heart_full.png" id="2_hiujq"]
 [ext_resource type="Texture2D" uid="uid://d3jukxvawsxko" path="res://assets/sprites/world_tileset.png" id="2_qdj7d"]
+[ext_resource type="Script" path="res://scripts/pause.gd" id="3_mybwe"]
 [ext_resource type="PackedScene" uid="uid://lha1ofdqpdum" path="res://scenes/platform.tscn" id="3_u2ein"]
 [ext_resource type="PackedScene" uid="uid://dr0myxahvx2r7" path="res://scenes/coin.tscn" id="4_f8dhm"]
 [ext_resource type="PackedScene" uid="uid://cish7gdqvs3rk" path="res://scenes/killzone.tscn" id="5_r4gem"]
@@ -15,6 +16,9 @@
 [ext_resource type="Script" path="res://scripts/big_demon.gd" id="12_oqrcv"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3xip"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2ppk"]
+bg_color = Color(0.145998, 0.641928, 0.903266, 1)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_imsb7"]
 texture = ExtResource("2_qdj7d")
@@ -268,6 +272,59 @@ layout_mode = 2
 texture = ExtResource("2_hiujq")
 expand_mode = 2
 
+[node name="Pause" type="Node" parent="CanvasLayer"]
+script = ExtResource("3_mybwe")
+
+[node name="Pause Panel" type="Panel" parent="CanvasLayer/Pause"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Pause/Pause Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -297.5
+offset_top = -170.0
+offset_right = 297.5
+offset_bottom = -114.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_h62fl")
+theme_override_font_sizes/font_size = 56
+text = "WHY DID YOU STOP?"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause/Pause Panel"]
+layout_mode = 0
+offset_left = 312.0
+offset_top = 257.0
+offset_right = 825.0
+offset_bottom = 497.0
+theme_override_constants/separation = 18
+
+[node name="Resume" type="Button" parent="CanvasLayer/Pause/Pause Panel/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_5dewf")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i2ppk")
+text = "RESUME"
+
+[node name="Main Menu" type="Button" parent="CanvasLayer/Pause/Pause Panel/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_5dewf")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i2ppk")
+text = "GO TO MAIN MENU"
+
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_f4xvb")
@@ -402,3 +459,6 @@ horizontal_alignment = 1
 [node name="Big Demon" parent="." instance=ExtResource("11_uyp8a")]
 position = Vector2(151, 0)
 script = ExtResource("12_oqrcv")
+
+[connection signal="pressed" from="CanvasLayer/Pause/Pause Panel/VBoxContainer/Resume" to="CanvasLayer/Pause" method="_on_resume_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pause/Pause Panel/VBoxContainer/Main Menu" to="CanvasLayer/Pause" method="_on_main_menu_pressed"]

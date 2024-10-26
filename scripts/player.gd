@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
-const PLAYER_HP = 9
+const PLAYER_HP = 3
 var current_hp = PLAYER_HP
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	if current_hp <= 0:
 			animated_sprite.animation = "death"
 			
-	if animated_sprite.animation == "getting_hit" and animation_player.is_playing():
+	elif animated_sprite.animation == "getting_hit" and animation_player.is_playing():
 		pass # pass is intentional so the condition delays going back to idle state
 		
 	elif is_on_floor():
