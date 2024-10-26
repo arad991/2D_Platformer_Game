@@ -2,6 +2,7 @@ extends Node2D
 
 const SPEED = 60
 const DAMAGE = 1
+const KNOCKBACK_DISTANCE = 700
 
 var direction = -1
 
@@ -22,5 +23,18 @@ func _process(delta: float) -> void:
 
 
 func _on_killzone_body_entered(body: Node2D) -> void:
-	body.get_hit(DAMAGE)
-	game_manager.update_hp()
+	if body.name == "Player":
+		var y_delta = position.y - body.position.y
+		var x_delta = body.position.x - position.x
+		if y_delta > 9:
+			queue_free()
+			body.jump()
+		else:
+			body.get_hit(DAMAGE)
+			if x_delta > 0:
+				body.jump_side(KNOCKBACK_DISTANCE)
+			else:
+				body.jump_side(-KNOCKBACK_DISTANCE)
+		game_manager.update_hp()
+	else:
+		print("I collided with: " + body.name)

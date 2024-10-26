@@ -29,7 +29,7 @@ func _ready():
 	update_hp()
 	
 func update_hp():
-	hp_label.text = "HP: " + str(player.current_hp)
+	#hp_label.text = "HP: " + str(player.current_hp)
 	for h in player.PLAYER_HP:
 		if h < player.current_hp:
 			pass

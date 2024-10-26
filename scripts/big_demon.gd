@@ -4,6 +4,7 @@ const SPEED = 100
 const DAMAGE = 1
 const JUMP_VELOCITY = 1500.0
 const JUMP_DISTANCE = 20.0
+const KNOCKBACK_DISTANCE = 700
 var direction = -1
 
 @onready var ray_cast_right: RayCast2D = $RayCastRight
@@ -40,8 +41,21 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _on_killzone_body_entered(body: Node2D) -> void:
-	body.get_hit(DAMAGE)
-	game_manager.update_hp()
+	if body.name == "Player":
+		var y_delta = position.y - body.position.y
+		var x_delta = body.position.x - position.x
+		if y_delta > 13:
+			queue_free()
+			body.jump()
+		else:
+			body.get_hit(DAMAGE)
+			if x_delta > 0:
+				body.jump_side(KNOCKBACK_DISTANCE)
+			else:
+				body.jump_side(-KNOCKBACK_DISTANCE)
+		game_manager.update_hp()
+	else:
+		print("I collided with: " + body.name)
 	
 func _on_jump_timer_timeout() -> void:
 	if is_on_floor():
