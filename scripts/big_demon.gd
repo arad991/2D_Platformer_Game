@@ -15,7 +15,6 @@ var direction = -1
 
 func _ready():
 	jump_timer.start()
-	print("timer has started!")
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
@@ -45,7 +44,6 @@ func _on_killzone_body_entered(body: Node2D) -> void:
 	game_manager.update_hp()
 	
 func _on_jump_timer_timeout() -> void:
-	print("timer has ended!")
 	if is_on_floor():
 		velocity.y = -JUMP_VELOCITY
 		# Reverse direction on each jump

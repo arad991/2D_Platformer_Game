@@ -3,7 +3,8 @@ extends CharacterBody2D
 
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
-var hp = 3
+const PLAYER_HP = 3
+var current_hp = PLAYER_HP
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var game_manager: Node = %GameManager
@@ -28,7 +29,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite.flip_h = true
 		
 	# Play animations
-	if hp <= 0:
+	if current_hp <= 0:
 			animated_sprite.animation = "death"
 	elif is_on_floor():
 		if direction == 0:
@@ -48,6 +49,6 @@ func _physics_process(delta: float) -> void:
 
 # decreases player hp by 1
 func get_hit(damage):
-	hp -= damage
+	current_hp -= damage
 	animation_player.play("getting_hit")
 	animated_sprite.play("getting_hit")
