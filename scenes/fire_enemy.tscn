@@ -1,0 +1,140 @@
+[gd_scene load_steps=18 format=3 uid="uid://cbuxny8nefw27"]
+
+[ext_resource type="Script" path="res://scripts/slime.gd" id="1_kdn5n"]
+[ext_resource type="Texture2D" uid="uid://c0xcgkasn3o6h" path="res://assets/sprites/fire_enemy_sprite.png" id="2_doimi"]
+[ext_resource type="PackedScene" uid="uid://cish7gdqvs3rk" path="res://scenes/killzone.tscn" id="10_0em0p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2hkl"]
+atlas = ExtResource("2_doimi")
+region = Rect2(0, 0, 256, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8gn2"]
+atlas = ExtResource("2_doimi")
+region = Rect2(256, 0, 256, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2ssi"]
+atlas = ExtResource("2_doimi")
+region = Rect2(512, 0, 256, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nu0u"]
+atlas = ExtResource("2_doimi")
+region = Rect2(768, 0, 256, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ircb7"]
+atlas = ExtResource("2_doimi")
+region = Rect2(0, 287, 256, 379)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ku0y3"]
+atlas = ExtResource("2_doimi")
+region = Rect2(256, 287, 256, 379)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_upui3"]
+atlas = ExtResource("2_doimi")
+region = Rect2(512, 287, 256, 379)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ka3vc"]
+atlas = ExtResource("2_doimi")
+region = Rect2(768, 287, 256, 379)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_788a0"]
+atlas = ExtResource("2_doimi")
+region = Rect2(0, 665, 256, 359)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_34d5y"]
+atlas = ExtResource("2_doimi")
+region = Rect2(256, 665, 256, 359)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gluyp"]
+atlas = ExtResource("2_doimi")
+region = Rect2(512, 665, 256, 359)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wf6av"]
+atlas = ExtResource("2_doimi")
+region = Rect2(768, 665, 256, 359)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bigns"]
+animations = [{
+"frames": [{
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_g2hkl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8gn2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2ssi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nu0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ircb7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ku0y3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_upui3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ka3vc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_788a0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_34d5y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gluyp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wf6av")
+}],
+"loop": false,
+"name": &"spawn",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oy8lx"]
+size = Vector2(24, 31)
+
+[node name="Fire Enemy" type="CharacterBody2D"]
+z_index = 1
+collision_layer = 4
+script = ExtResource("1_kdn5n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -12.625)
+scale = Vector2(0.0976562, 0.122396)
+sprite_frames = SubResource("SpriteFrames_bigns")
+animation = &"spawn"
+autoplay = "spawn"
+frame = 11
+frame_progress = 1.0
+
+[node name="Killzone" parent="." instance=ExtResource("10_0em0p")]
+position = Vector2(-1, -13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(3, 2.5)
+shape = SubResource("RectangleShape2D_oy8lx")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(2, -11)
+target_position = Vector2(17, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(2, -11)
+target_position = Vector2(-16, 0)
+
+[node name="Jump Timer" type="Timer" parent="."]
+wait_time = 1.7
+autostart = true
+
+[node name="CollisionShape2DMain" type="CollisionShape2D" parent="."]
+position = Vector2(2, -10.5)
+shape = SubResource("RectangleShape2D_oy8lx")
+
+[connection signal="body_entered" from="Killzone" to="." method="_on_killzone_body_entered"]
+[connection signal="timeout" from="Jump Timer" to="." method="_on_jump_timer_timeout"]

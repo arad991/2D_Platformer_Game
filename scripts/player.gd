@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
-const PLAYER_HP = 3
+const PLAYER_HP = 5
 var current_hp = PLAYER_HP
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -45,7 +45,6 @@ func _physics_process(delta: float) -> void:
 		
 	elif is_on_floor():
 		if direction == 0:
-			print("Playing idle")
 			animated_sprite.play("idle")
 		else:
 			animated_sprite.play("run")
@@ -67,5 +66,4 @@ func get_hit(damage):
 	animation_player.play("getting_hit")
 	#animated_sprite.animation = "getting_hit"
 	#animated_sprite.play("getting_hit")
-	print("Playing getting_hit animation")
 	
